@@ -66,4 +66,4 @@ foreach ($unity in $unitys){
 
 # Send to Grid-View (Windows Only)
 # $fsdata.entries | Select-Object -ExpandProperty content | Select-Object id,name,description,type,@{n="sizeTotalGB";e={[int]($_.sizeTotal/1GB)}},`
-# @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},isThinEnabled | out-gridview
+# @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},@{n="sizeAllocatedGB";e={[int]($_.sizeAllocated/1GB)}},isThinEnabled | out-gridview
