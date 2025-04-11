@@ -28,7 +28,7 @@ $unitys = Get-Content unitys.txt
 $csvFile = "$TimeStamp.file_system_export.csv"
 
 #FILE SYSTEMS Query (Check EMC documentation online for more details)
-$query = "/api/types/filesystem/instances?compact=True&fields=id,name,description,type,sizeTotal,sizeUsed,sizeAllocated,isThinEnabled,pool,nasServer"
+$query = "/api/types/filesystem/instances?compact=True&fields=id,name,description,type,sizeTotal,sizeUsed,isThinEnabled,pool,nasServer"
 
 foreach ($unity in $unitys){
 
@@ -38,12 +38,12 @@ foreach ($unity in $unitys){
         $fsdata = $fs.Content | ConvertFrom-Json 
         if (!(Test-Path $csvFile)) {
             $fsdata.entries | Select-Object id,name,description,type,@{n="sizeTotalGB";e={[int]($_.sizeTotal/1GB)}},`
-            @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},@{n="sizeAllocatedGB";e={[int]($_.sizeAllocated/1GB)}},isThinEnabled |
+            @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},isThinEnabled |
         Export-Csv -Path $csvFile -NoTypeInformation
     }
         else {
             $fsdata.entries | Select-Object id,name,description,type,@{n="sizeTotalGB";e={[int]($_.sizeTotal/1GB)}},`
-            @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},@{n="sizeAllocatedGB";e={[int]($_.sizeAllocated/1GB)}},isThinEnabled |
+            @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},isThinEnabled |
         Export-Csv -Path $csvFile -NoTypeInformation -Append
         }
     }
@@ -54,7 +54,7 @@ foreach ($unity in $unitys){
 
     # Output the results in your terminal
     $fsdata.entries | Select-Object -ExpandProperty content | Select-Object id,name,description,type,@{n="sizeTotalGB";e={[int]($_.sizeTotal/1GB)}},`
-    @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},@{n="sizeAllocatedGB";e={[int]($_.sizeAllocated/1GB)}},isThinEnabled | Format-Table -AutoSize
+    @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},isThinEnabled | Format-Table -AutoSize
 
 
 # Uncomment and run the lines below to probe the data that was returned.    
@@ -66,4 +66,4 @@ foreach ($unity in $unitys){
 
 # Send to Grid-View (Windows Only)
 # $fsdata.entries | Select-Object -ExpandProperty content | Select-Object id,name,description,type,@{n="sizeTotalGB";e={[int]($_.sizeTotal/1GB)}},`
-# @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},@{n="sizeAllocatedGB";e={[int]($_.sizeAllocated/1GB)}},isThinEnabled | out-gridview
+# @{n="sizeUsedGB";e={[int]($_.sizeUsed/1GB)}},isThinEnabled | out-gridview
